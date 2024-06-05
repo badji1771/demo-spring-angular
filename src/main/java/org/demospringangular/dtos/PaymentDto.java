@@ -1,6 +1,5 @@
-package org.demospringangular.web;
+package org.demospringangular.dtos;
 
-import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
