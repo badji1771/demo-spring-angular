@@ -24,6 +24,7 @@ import {MatFormField, MatFormFieldModule} from "@angular/material/form-field";
 import {MatInput, MatInputModule} from "@angular/material/input";
 import {ReactiveFormsModule} from "@angular/forms";
 import {AuthGuard} from "./guards/auth.guard";
+import {AuthorizationGuard} from "./guards/authorization.guard";
 
 @NgModule({
   declarations: [
@@ -54,7 +55,7 @@ import {AuthGuard} from "./guards/auth.guard";
     ReactiveFormsModule
   ],
   providers: [
-    provideAnimationsAsync(),AuthGuard
+    provideAnimationsAsync(),AuthGuard,AuthorizationGuard
   ],
   bootstrap: [AppComponent]
 })
