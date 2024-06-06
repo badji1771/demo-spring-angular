@@ -19,6 +19,7 @@ import java.util.List;
 
 
 @RestController
+@CrossOrigin("*")
 public class PayentRestController {
     private StudentRepository studentRepository;
     private PaymentRepository paymentRepository;

@@ -41,13 +41,14 @@ public class DemoSpringAngularApplication {
 studentRepository.findAll().forEach(st->{
     for (int i=0;i<10; i++){
         int index = random.nextInt(paymentTypes.length);
-        Payment payent = Payment.builder().amount(1000+Math.random()*20000)
+       paymentRepository.save(Payment.builder().amount(1000+Math.random()*20000)
                 .type(paymentTypes[index])
                 .status(PaymentStatus.CREATED)
                 .date(LocalDate.now())
-                .student(st).build();
+                .student(st).build());
     }
 });
+
         };
     }
 
