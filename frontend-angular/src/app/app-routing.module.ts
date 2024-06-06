@@ -10,6 +10,8 @@ import {StudentsComponent} from "./students/students.component";
 import {PaymentsComponent} from "./payments/payments.component";
 
 const routes: Routes = [
+  {path : "",component : LoginComponent},
+  {path : "login",component : LoginComponent},
   {path : "home",component : HomeComponent},
   {path : "profile",component : ProfileComponent},
   {path : "login",component : LoginComponent},
