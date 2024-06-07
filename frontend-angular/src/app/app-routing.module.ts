@@ -19,7 +19,7 @@ const routes: Routes = [
     children:[
       {path : "home",component : HomeComponent},
       {path : "profile",component : ProfileComponent},
-      {path : "loadStudents",component : LoadStudentsComponent, canActivate:[AuthorizationGuard], data : {roles:['ADMIN']}},
+      {path : "loadStudents",component : LoadStudentsComponent/*, canActivate:[AuthorizationGuard], data : {roles:['ADMIN']}*/},
       {path : "loadPayments",component : LoadPaymentsComponent},
       {path : "dashboard",component : DashboardComponent},
       {path : "students",component : StudentsComponent},
