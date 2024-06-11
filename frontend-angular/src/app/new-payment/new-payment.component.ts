@@ -28,11 +28,18 @@ export class NewPaymentComponent implements  OnInit{
       date : this.fb.control(''),
       amount : this.fb.control(''),
       type : this.fb.control(''),
-      status : this.fb.control(''),
       studentCode : this.fb.control(this.studentCode),
-      file :this.fb.control('')
+      fileSource :this.fb.control(''),
+      fileName : this.fb.control('')
 
     });
   }
 
+  selectFile(event:any) {
+
+  }
+
+  savePayment() {
+
+  }
 }
