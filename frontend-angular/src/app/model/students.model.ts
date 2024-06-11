@@ -2,7 +2,7 @@ export  interface Student{
   id : String;
   code : String;
   firstName : String;
-  lasttName : String;
+  lastName : String;
   programId : String;
   photo : String;
 }
