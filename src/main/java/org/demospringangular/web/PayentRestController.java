@@ -1,6 +1,7 @@
 package org.demospringangular.web;
 
 
+import org.demospringangular.dtos.NewPaymentDto;
 import org.demospringangular.dtos.PaymentDto;
 import org.demospringangular.entities.Payment;
 import org.demospringangular.entities.PaymentStatus;
@@ -77,7 +78,7 @@ public class PayentRestController {
     }
 
     @PostMapping(path = "/payments",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public Payment savePayment(MultipartFile file,@RequestParam PaymentDto dto) throws IOException {
+    public Payment savePayment(@RequestParam("file") MultipartFile file, NewPaymentDto dto) throws IOException {
          return this.paymentService.savePayment(file,dto);
     }
     @GetMapping(path = "/paymentFile/{paymentId}", produces = MediaType.APPLICATION_PDF_VALUE)

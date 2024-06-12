@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {ActivatedRoute} from "@angular/router";
 import {PaymentType} from "../model/students.model";
+import {StudentsService} from "../services/students.service";
 
 @Component({
   selector: 'app-new-payment',
@@ -13,7 +14,8 @@ export class NewPaymentComponent implements  OnInit{
   paymentFormGroup! : FormGroup;
   studentCode! :string;
   paymentTypes :string[]=[];
-  constructor(private  fb : FormBuilder,private activatedRoute : ActivatedRoute) {
+  pdfFileUrl! : string;
+  constructor(private  fb : FormBuilder,private activatedRoute : ActivatedRoute,private studentsService : StudentsService) {
   }
   ngOnInit(): void {
     for(let elt in PaymentType){
@@ -36,10 +38,33 @@ export class NewPaymentComponent implements  OnInit{
   }
 
   selectFile(event:any) {
+    if (event.target.files.length>0){
+      let file = event.target.files[0];
+      this.paymentFormGroup.patchValue({
+        fileSource : file,
+        fileName : file.name
+      });
+      this.pdfFileUrl = window.URL.createObjectURL(file);
+    }
 
   }
 
   savePayment() {
-
+    let date = new Date(this.paymentFormGroup.value.date);
+    let formatedDate : string = date.getDate()+"/"+(date.getMonth()+1)+"/"+date.getFullYear();
+    let formData = new FormData();
+    formData.set('date',formatedDate);
+    formData.set('amount',this.paymentFormGroup.value.amount);
+    formData.set('type',this.paymentFormGroup.value.type);
+    formData.set('studentCode',this.paymentFormGroup.value.studentCode);
+    formData.set('file',this.paymentFormGroup.value.fileSource);
+    this.studentsService.savePayment(formData).subscribe({
+      next : value => {
+        alert('Payment effectue avec succes !')
+      },
+      error:err => {
+        console.log(err);
+      }
+    })
   }
 }

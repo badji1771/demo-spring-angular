@@ -1,9 +1,11 @@
 package org.demospringangular.services;
 
 import jakarta.transaction.Transactional;
+import org.demospringangular.dtos.NewPaymentDto;
 import org.demospringangular.dtos.PaymentDto;
 import org.demospringangular.entities.Payment;
 import org.demospringangular.entities.PaymentStatus;
+import org.demospringangular.entities.Student;
 import org.demospringangular.repository.PaymentRepository;
 import org.demospringangular.repository.StudentRepository;
 import org.springframework.stereotype.Service;
@@ -26,7 +28,7 @@ public class PaymentService {
         this.paymentRepository = paymentRepository;
     }
 
-    public Payment savePayment(MultipartFile file, PaymentDto dto) throws IOException {
+    public Payment savePayment(MultipartFile file, NewPaymentDto dto) throws IOException {
         Path folderPath = Paths.get(System.getProperty("user.home"),"demo-data","payments");
         if(!Files.exists(folderPath)){
             Files.createDirectories(folderPath);
@@ -34,10 +36,12 @@ public class PaymentService {
         String fileName = UUID.randomUUID().toString();
         Path filePath = Paths.get(System.getProperty("user.home"),"demo-data","payment",fileName+".pdf");
         Files.copy(file.getInputStream(),filePath);
-        // Student student =studentRepository.findByCode(dto.getStudent().getCode());
+         Student student =studentRepository.findByCode(dto.getStudentCode());
         Payment payment = Payment.builder()
                 .date(dto.getDate())
-                .student(dto.getStudent())
+                .type(dto.getType())
+                .amount(dto.getAmount())
+                .student(student)
                 .file(filePath.toUri().toString())
                 .status(PaymentStatus.CREATED).build();
         return paymentRepository.save(payment);
