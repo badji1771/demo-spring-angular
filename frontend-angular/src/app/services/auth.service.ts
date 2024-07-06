@@ -1,5 +1,9 @@
 import { Injectable } from '@angular/core';
 import {Router} from "@angular/router";
+import {Payment, User} from "../model/students.model";
+import {environment} from "../../environments/environment";
+import {HttpClient} from "@angular/common/http";
+import {catchError, map, Observable, of} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -14,9 +18,32 @@ export class AuthService {
   public username : any;
   public isAuthenticated : boolean = false;
   public roles : string[] =[];
-  constructor(private router : Router) { }
+  constructor(private http : HttpClient,private router : Router) { }
 
-  public login(username : string, password : string):boolean{
+  islogin = false;
+  /*login(username :string ) {
+    this.isAuthenticated = true;
+    return this.http.get<User>(`${environment.backendHost}/api/users/auth/${username}`)
+  }*/
+  login(username: string): Observable<User | null> {
+    return this.http.get<User>(`${environment.backendHost}/api/users/auth/${username}`).pipe(
+      map(user => {
+        if (user) {
+          this.isAuthenticated = true;
+          return user;
+        } else {
+          this.isAuthenticated = false;
+          return null;
+        }
+      }),
+      catchError(error => {
+        this.isAuthenticated = false;
+        console.error('Login error', error);
+        return of(null); // Return a null observable in case of error
+      })
+    );
+  }
+  /*public login(username : string, password : string):boolean{
   if(this.users[username] && this.users[username]['password']==password){
     this.username = username;
     this.isAuthenticated = true;
@@ -25,7 +52,7 @@ export class AuthService {
   }else{
     return false;
   }
-  }
+  }*/
 
   logout() {
     this.isAuthenticated=false;
