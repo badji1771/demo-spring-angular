@@ -37,7 +37,10 @@ public class User {
 	  private String matricule;
 	  private String password;
 	  private boolean isActive;
-	  private String role;
+
+	  @ManyToOne
+	  private Role role;
+
 	  private String fileName;
 	  private String resetToken;
 	  private LocalDateTime dateToken;
