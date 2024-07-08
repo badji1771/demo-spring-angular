@@ -17,6 +17,21 @@ export  interface Payment{
   student : Student;
 }
 
+export interface User{
+  id : number;
+  username : string;
+  email : string;
+  nom : string;
+  matricule : string;
+  password : string;
+  isActive : boolean;
+  role : string;
+  fileName : string;
+  resetToken : string;
+  dateToken : string;
+
+}
+
 export enum PaymentType{
   CASH,CHECK,TRANSFER,DEPOSIT
 }
