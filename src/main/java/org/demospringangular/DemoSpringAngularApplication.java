@@ -1,9 +1,7 @@
 package org.demospringangular;
 
 import org.demospringangular.entities.*;
-import org.demospringangular.repository.PaymentRepository;
-import org.demospringangular.repository.StudentRepository;
-import org.demospringangular.repository.UserRepository;
+import org.demospringangular.repository.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -20,7 +18,7 @@ public class DemoSpringAngularApplication {
         SpringApplication.run(DemoSpringAngularApplication.class, args);
     }
     @Bean
-    CommandLineRunner commandLineRunner(StudentRepository studentRepository, PaymentRepository paymentRepository, UserRepository  userRepository){
+    CommandLineRunner commandLineRunner(StudentRepository studentRepository, PaymentRepository paymentRepository, UserRepository  userRepository, RoleRepository roleRepository, UserRoleRepository userRoleRepository){
         return args ->{
             studentRepository.save(Student.builder().id(UUID.randomUUID().toString())
                             .firstName("Mohamed").lastName("Badji").code("123").programId("PROS")
@@ -51,7 +49,7 @@ userRepository.save(User.builder()
                 .password("123")
                 .nom("Moussa")
                 .email("moussa@gmail.com")
-                .role("ADMIN")
+
                 .matricule("123")
                 .isActive(true)
         .build());
@@ -60,10 +58,15 @@ userRepository.save(User.builder()
                     .password("123")
                     .nom("Amadou")
                     .email("amadou@gmail.com")
-                    .role("USER")
                     .matricule("1234")
                     .isActive(true)
                     .build());
+            roleRepository.save(Role.builder()
+                    .code("ADMIN")
+                    .isActive(true)
+                    .libelle("ADMIN")
+                    .build());
+            userRoleRepository.save(UserRole.builder().user(userRepository.findById(1L).get()).role(roleRepository.findById(1L).get()).codeRole("ADMIN").username("admin").build());
 
         };
     }
