@@ -15,6 +15,7 @@ export class NewPaymentComponent implements  OnInit{
   studentCode! :string;
   paymentTypes :string[]=[];
   pdfFileUrl! : string;
+  showProgress : boolean = false;
   constructor(private  fb : FormBuilder,private activatedRoute : ActivatedRoute,private studentsService : StudentsService) {
   }
   ngOnInit(): void {
@@ -50,6 +51,7 @@ export class NewPaymentComponent implements  OnInit{
   }
 
   savePayment() {
+    this.showProgress = true;
     let date = new Date(this.paymentFormGroup.value.date);
     let formatedDate : string = date.getDate()+"/"+(date.getMonth()+1)+"/"+date.getFullYear();
     let formData = new FormData();
@@ -60,11 +62,16 @@ export class NewPaymentComponent implements  OnInit{
     formData.set('file',this.paymentFormGroup.value.fileSource);
     this.studentsService.savePayment(formData).subscribe({
       next : value => {
+        this.showProgress = false;
         alert('Payment effectue avec succes !')
       },
       error:err => {
         console.log(err);
       }
     })
+  }
+
+  afterLoadComplete(event: any) {
+    console.log(event);
   }
 }

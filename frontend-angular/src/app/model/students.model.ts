@@ -25,11 +25,26 @@ export interface User{
   matricule : string;
   password : string;
   isActive : boolean;
-  role : string;
+  role : Role;
   fileName : string;
   resetToken : string;
   dateToken : string;
 
+}
+
+export interface Role{
+  id : number;
+  code : number;
+  libelle : number;
+  isActive : boolean;
+}
+
+export interface UserRole{
+  id : number;
+  role : Role;
+  user : User;
+  codeRole : string;
+  matriculeUser : string;
 }
 
 export enum PaymentType{

@@ -35,6 +35,8 @@ import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatNativeDateModule} from "@angular/material/core";
 import {MatSelect, MatSelectModule} from "@angular/material/select";
 import {ToastrModule} from "ngx-toastr";
+import {PdfViewerModule} from "ng2-pdf-viewer";
+import {MatProgressSpinner, MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 
 @NgModule({
   declarations: [
@@ -67,7 +69,9 @@ import {ToastrModule} from "ngx-toastr";
     ReactiveFormsModule,
     HttpClientModule, MatTableModule, MatPaginatorModule, MatSortModule,
     MatDatepickerModule, MatNativeDateModule, MatSelectModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    MatDatepickerModule, MatNativeDateModule, MatSelectModule,
+    PdfViewerModule, MatProgressSpinnerModule
 
   ],
   providers: [

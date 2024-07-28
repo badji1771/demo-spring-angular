@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {Router} from "@angular/router";
-import {Payment, User} from "../model/students.model";
+import {Payment, Role, User} from "../model/students.model";
 import {environment} from "../../environments/environment";
 import {HttpClient} from "@angular/common/http";
 import {catchError, map, Observable, of} from "rxjs";
@@ -10,25 +10,38 @@ import {catchError, map, Observable, of} from "rxjs";
 })
 export class AuthService {
 
-  public users:any ={
+  public userRoles :any;
+  /*public users:any ={
     admin :{password:'1234',roles:['STUDENT','ADMIN']},
     user1 :{password:'1234',roles:['STUDENT']},
-  }
+  }*/
 
   public username : any;
   public isAuthenticated : boolean = false;
   public roles : string[] =[];
-  public roleUserConnected : any;
+  public rolesForUser : Role[] =[];
+  //public rolesForUser : string[] =[];
+
   constructor(private http : HttpClient,private router : Router) { }
 
   islogin = false;
+  /*login(username :string ) {
+    this.isAuthenticated = true;
+    return this.http.get<User>(`${environment.backendHost}/api/users/auth/${username}`)
+  }*/
+
+  allRolesByUser(username :string ) {
+    this.isAuthenticated = true;
+    return this.http.get<Array<Role>>(`${environment.backendHost}/api/userole/role/${username}`)
+  }
 
   login(username: string): Observable<User | null> {
     return this.http.get<User>(`${environment.backendHost}/api/users/auth/${username}`).pipe(
       map(user => {
         if (user) {
           this.isAuthenticated = true;
-          this.roleUserConnected=user.role;
+          this.rolesByUser(user.username);
+          this.username =user.username;
           return user;
         } else {
           this.isAuthenticated = false;
@@ -41,6 +54,21 @@ export class AuthService {
         return of(null); // Return a null observable in case of error
       })
     );
+  }
+
+  public rolesByUser(username : string){
+    this.allRolesByUser(username).subscribe(
+      datas =>{
+        this.rolesForUser = datas;
+        console.log("this.rolesForUser",this.rolesForUser);
+        if (this.rolesForUser){
+          for (var element of this.rolesForUser){
+            this.roles.push(element.code.toString());
+          }
+        }
+
+      }
+    )
   }
   /*public login(username : string, password : string):boolean{
   if(this.users[username] && this.users[username]['password']==password){

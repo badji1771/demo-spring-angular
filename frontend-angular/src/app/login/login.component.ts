@@ -49,8 +49,7 @@ export class LoginComponent implements OnInit{
             localStorage.setItem("role", this.user.role);
             localStorage.setItem("matricule", this.user.matricule);
             this.authService.islogin = true;
-           // this.isAuthenticated = true;
-            if (this.user.role == "ADMIN") {
+            if (this.user.username == "admin") {
               console.log("this.user.role  ",this.user.role);
               this.router.navigateByUrl("/admin")
             }
