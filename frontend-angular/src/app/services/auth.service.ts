@@ -18,18 +18,17 @@ export class AuthService {
   public username : any;
   public isAuthenticated : boolean = false;
   public roles : string[] =[];
+  public roleUserConnected : any;
   constructor(private http : HttpClient,private router : Router) { }
 
   islogin = false;
-  /*login(username :string ) {
-    this.isAuthenticated = true;
-    return this.http.get<User>(`${environment.backendHost}/api/users/auth/${username}`)
-  }*/
+
   login(username: string): Observable<User | null> {
     return this.http.get<User>(`${environment.backendHost}/api/users/auth/${username}`).pipe(
       map(user => {
         if (user) {
           this.isAuthenticated = true;
+          this.roleUserConnected=user.role;
           return user;
         } else {
           this.isAuthenticated = false;

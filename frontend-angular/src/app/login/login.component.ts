@@ -56,14 +56,7 @@ export class LoginComponent implements OnInit{
             }
             else {
               this.router.navigateByUrl("/admin")
-              //if (this.user.role == "ENSEIGNANT")
 
-              /*else if (this.user.role == "RIT")
-                this.authService.rit = true;
-              else if (this.user.role == "RFI")
-                this.authService.rfi = true;
-              else if (this.user.role == "ADMIN")
-                this.authService.admin = true;*/
             }
           }
           else {
