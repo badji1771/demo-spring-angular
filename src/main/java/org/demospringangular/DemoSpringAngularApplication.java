@@ -66,7 +66,11 @@ userRepository.save(User.builder()
                     .isActive(true)
                     .libelle("ADMIN")
                     .build());
-            userRoleRepository.save(UserRole.builder().user(userRepository.findById(1L).get()).role(roleRepository.findById(1L).get()).codeRole("ADMIN").username("admin").build());
+            userRoleRepository.save(UserRole.builder()
+                    .user(userRepository.findById(1L).get())
+                    .role(roleRepository.findById(1L).get())
+                    .codeRole("ADMIN")
+                    .username("admin").build());
 
         };
     }
