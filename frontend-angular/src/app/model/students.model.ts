@@ -15,6 +15,7 @@ export  interface Payment{
   status : String;
   file : String;
   student : Student;
+  ville : Ville;
 }
 
 export interface User{
@@ -34,9 +35,15 @@ export interface User{
 
 export interface Role{
   id : number;
-  code : number;
-  libelle : number;
+  code : string;
+  libelle : string;
   isActive : boolean;
+}
+
+export interface Ville{
+  id : number;
+  code : string;
+  libelle : string;
 }
 
 export interface UserRole{

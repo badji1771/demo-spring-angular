@@ -1,7 +1,7 @@
 package org.demospringangular.entities;
 
 import java.time.LocalDateTime;
-
+import java.util.Date;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -10,6 +10,8 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -27,7 +29,7 @@ uniqueConstraints = {
 		@UniqueConstraint(columnNames = "matricule") 
 	})
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class User {
+public class User{
 	@Id
 	  @GeneratedValue(strategy = GenerationType.AUTO)
 	  private long id; 
@@ -43,7 +45,15 @@ public class User {
 	  private String password;
 	  private boolean isActive;
 
-	  @ManyToOne
+	@CreationTimestamp
+	@Column(updatable = false, name = "created_at")
+	private Date createdAt;
+
+	@UpdateTimestamp
+	@Column(name = "updated_at")
+	private Date updatedAt;
+
+	@ManyToOne
 	  private Role role;
 
 	  private String fileName;

@@ -37,6 +37,7 @@ import {MatSelect, MatSelectModule} from "@angular/material/select";
 import {ToastrModule} from "ngx-toastr";
 import {PdfViewerModule} from "ng2-pdf-viewer";
 import {MatProgressSpinner, MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 @NgModule({
   declarations: [
@@ -71,7 +72,8 @@ import {MatProgressSpinner, MatProgressSpinnerModule} from "@angular/material/pr
     MatDatepickerModule, MatNativeDateModule, MatSelectModule,
     ToastrModule.forRoot(),
     MatDatepickerModule, MatNativeDateModule, MatSelectModule,
-    PdfViewerModule, MatProgressSpinnerModule
+    PdfViewerModule, MatProgressSpinnerModule,
+    BrowserAnimationsModule
 
   ],
   providers: [
