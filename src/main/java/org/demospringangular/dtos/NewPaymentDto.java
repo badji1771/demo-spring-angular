@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import org.demospringangular.entities.PaymentType;
+import org.demospringangular.entities.Ville;
 
 
 import java.time.LocalDate;
@@ -17,4 +18,5 @@ public class NewPaymentDto {
     private double amount;
     private PaymentType type;
     private String studentCode;
+    private Long ville;
 }

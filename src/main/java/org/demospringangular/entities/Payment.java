@@ -24,5 +24,8 @@ public class Payment {
     @ManyToOne
     private Student student;
 
+    @ManyToOne
+    private Ville ville;
+
 
 }

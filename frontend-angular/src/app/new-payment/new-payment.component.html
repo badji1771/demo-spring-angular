@@ -27,9 +27,27 @@
       </mat-form-field>
 
       <mat-form-field appearance="outline">
+        <mat-label>Select Ville</mat-label>
+        <mat-select formControlName="ville">
+          @for (v of villes; track v){
+            <mat-option [value]="v.id">{{v.libelle}}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
         <mat-label>Student Code</mat-label>
         <input matInput formControlName="studentCode">
       </mat-form-field>
+
+      <!--<mat-form-field appearance="fill">
+        <mat-label>Select Ville</mat-label>
+        <mat-select formControlName="ville" [(value)]="selectedVille">
+          <mat-option *ngFor="let ville of villes" [value]="ville">
+            {{ ville.libelle }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>-->
 
       <mat-form-field appearance="outline">
         <mat-label>File</mat-label>
