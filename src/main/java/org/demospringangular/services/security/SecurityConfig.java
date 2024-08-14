@@ -33,7 +33,10 @@ import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+
+import javax.sql.DataSource;
 
 
 @Configuration
@@ -55,12 +58,28 @@ private PasswordEncoder passwordEncoder;
         return authenticationConfiguration.getAuthenticationManager();
     }
     @Bean
-    public AuthenticationManager authenticationManager(@Qualifier("inMemoryUserDetailsManager") UserDetailsService userDetailsService) throws Exception {
+    public AuthenticationManager authenticationManager(UserDetailsService userDetailsService) throws Exception {
        var authhProvider = new DaoAuthenticationProvider();
        authhProvider.setPasswordEncoder(passwordEncoder);
        authhProvider.setUserDetailsService(userDetailsService);
        return new ProviderManager(authhProvider);
     }
+    /*@Bean
+    public UserDetailsService userDetailsService(DataSource dataSource) {
+        JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource);
+
+        // Requête SQL pour récupérer les utilisateurs à partir de votre table `Utilisateur`
+        jdbcUserDetailsManager.setUsersByUsernameQuery(
+                "SELECT username, password, is_active AS enabled FROM utilisateur WHERE username = ?");
+
+        // Requête SQL pour récupérer les rôles à partir de votre table `User_Role`
+        jdbcUserDetailsManager.setAuthoritiesByUsernameQuery(
+                "SELECT u.username, r.code AS authority " +
+                        "FROM utilisateur u, role r, utilisateur_user_roles ur " +
+                        "WHERE u.id = ur.user_id AND r.id = ur.role_id AND u.username = ?");
+
+        return jdbcUserDetailsManager;
+    }*/
     @Bean
   public UserDetailsService inMemoryUserDetailsManager(){
         return new InMemoryUserDetailsManager(
