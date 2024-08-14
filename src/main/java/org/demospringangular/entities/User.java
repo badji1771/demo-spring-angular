@@ -1,7 +1,10 @@
 package org.demospringangular.entities;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -29,7 +32,7 @@ uniqueConstraints = {
 		@UniqueConstraint(columnNames = "matricule") 
 	})
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class User{
+public class User {
 	@Id
 	  @GeneratedValue(strategy = GenerationType.AUTO)
 	  private long id; 
@@ -53,12 +56,10 @@ public class User{
 	@Column(name = "updated_at")
 	private Date updatedAt;
 
-	@ManyToOne
-	  private Role role;
+	  @ManyToMany(fetch = FetchType.EAGER)
+	  private Collection<Role> userRoles = new ArrayList<>();
 
-	  private String fileName;
-	  private String resetToken;
-	  private LocalDateTime dateToken;
+
 
 
 		

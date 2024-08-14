@@ -1,3 +1,4 @@
+/*
 package org.demospringangular.entities;
 
 import jakarta.persistence.*;
@@ -23,3 +24,4 @@ public class UserRole {
     private String codeRole;
     private String username;
 }
+*/

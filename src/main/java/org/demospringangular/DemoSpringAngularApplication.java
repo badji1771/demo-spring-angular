@@ -2,25 +2,37 @@ package org.demospringangular;
 
 import org.demospringangular.entities.*;
 import org.demospringangular.repository.*;
+import org.demospringangular.services.UserRoleServiceI;
+import org.demospringangular.services.security.RsakeysConfig;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.UUID;
 
 @SpringBootApplication
+@EnableConfigurationProperties(RsakeysConfig.class)
 public class DemoSpringAngularApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(DemoSpringAngularApplication.class, args);
     }
+
     @Bean
-    CommandLineRunner commandLineRunner(StudentRepository studentRepository, PaymentRepository paymentRepository, UserRepository  userRepository, RoleRepository roleRepository, UserRoleRepository userRoleRepository,VilleRepository villeRepository){
+    public PasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
+    }
+    @Bean
+    CommandLineRunner commandLineRunner(StudentRepository studentRepository, PaymentRepository paymentRepository, UserRoleServiceI userRoleServiceI, RoleRepository roleRepository,  VilleRepository villeRepository){
         return args ->{
-            studentRepository.save(Student.builder().id(UUID.randomUUID().toString())
+           /* studentRepository.save(Student.builder().id(UUID.randomUUID().toString())
                             .firstName("Mohamed").lastName("Badji").code("123").programId("PROS")
                     .build());
              studentRepository.save(Student.builder().id(UUID.randomUUID().toString())
@@ -43,31 +55,25 @@ studentRepository.findAll().forEach(st->{
                 .date(LocalDate.now())
                 .student(st).build());
     }
-});
-userRepository.save(User.builder()
-                .username("admin")
-                .password("123")
-                .nom("Moussa")
-                .email("moussa@gmail.com")
+});*/
 
-                .matricule("123")
-                .isActive(true)
-        .build());
-            userRepository.save(User.builder()
-                    .username("user1")
-                    .password("123")
-                    .nom("Amadou")
-                    .email("amadou@gmail.com")
-                    .matricule("1234")
-                    .isActive(true)
-                    .build());
-            roleRepository.save(Role.builder()
-                    .code("ADMIN")
-                    .isActive(true)
-                    .libelle("ADMIN")
-                    .build());
-            userRoleRepository.save(UserRole.builder().user(userRepository.findById(1L).get()).role(roleRepository.findById(1L).get()).codeRole("ADMIN").username("admin").build());
-            villeRepository.save(Ville.builder()
+           /* userRoleServiceI.addNewRole(new Role(1,"ADMIN","ADMIN",true));
+            userRoleServiceI.addNewRole(new Role(2,"USER","USER",true));
+            userRoleServiceI.addNewRole(new Role(3,"MANAGER","MANAGER",true));
+
+            userRoleServiceI.addNeUser(new User(1,"admin","admin@gmail.com","admin","001","123",true,null,null,new ArrayList<>()));
+            userRoleServiceI.addNeUser(new User(2,"user1","user1@gmail.com","user1","002","123",true,null,null,new ArrayList<>()));
+            userRoleServiceI.addNeUser(new User(3,"user2","user2@gmail.com","user1","003","123",true,null,null,new ArrayList<>()));
+*/
+
+
+           /* userRoleServiceI.addRoleToUser("user1","USER");
+            userRoleServiceI.addRoleToUser("user2","USER");
+            userRoleServiceI.addRoleToUser("user2","MANAGER");
+            userRoleServiceI.addRoleToUser("admin","ADMIN");
+            userRoleServiceI.addRoleToUser("admin","USER");*/
+            //userRoleRepository.save(UserRole.builder().user(userRepository.findById(1L).get()).role(roleRepository.findById(1L).get()).codeRole("ADMIN").username("admin").build());
+           /* villeRepository.save(Ville.builder()
                     .code("Dakar")
                     .libelle("Dakar")
                     .build());
@@ -82,9 +88,12 @@ userRepository.save(User.builder()
             villeRepository.save(Ville.builder()
                     .code("Thiaroye")
                     .libelle("Thiaroye")
-                    .build());
+                    .build());*/
 
         };
     }
+
+
+
 
 }

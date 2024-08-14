@@ -3,11 +3,13 @@ package org.demospringangular.web;
 import org.demospringangular.entities.Role;
 import org.demospringangular.entities.User;
 import org.demospringangular.services.UserRoleService;
+import org.demospringangular.services.UserRoleServiceI;
 import org.demospringangular.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,16 +17,15 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/userole")
 public class UserRaoleController {
-    @Autowired
-    private UserService userService;
 
-    @Autowired
-    private UserRoleService userRoleService;
+
+  @Autowired
+    private UserRoleServiceI userRoleService;
 
 
     @GetMapping("/role/{username}")
-    public List<Role> list(@PathVariable String  username) {
-        List<Role> liste = userRoleService.getAllRoleByUsername(username);
+    public Collection<Role> list(@PathVariable String  username) {
+        Collection<Role> liste = userRoleService.loadRoleByUsername(username);
         return liste;
     }
 }

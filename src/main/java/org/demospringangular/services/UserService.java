@@ -40,10 +40,7 @@ public class UserService {
 		                             .getId();	    	
 	    }
 	    
-	    public void update(long id, User user) {
-		        user.setFileName(user.getFileName());
-	            repository.save(user);
-	        }
+
 	    
 	
 	    public Optional<User> login(String name) {
@@ -63,10 +60,7 @@ public class UserService {
 		}
 
 		
-		public Optional <User> findUserByResetToken(String resetToken) {
-			return repository.findByResetToken(resetToken);
-		}
-		
+
 		@Async
 		public void sendEmail(SimpleMailMessage email) {
 			mailSender.send(email);

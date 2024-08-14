@@ -19,6 +19,7 @@ import org.demospringangular.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,7 +34,8 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin("*")
+//@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api")
 public class UserController {
@@ -50,6 +52,7 @@ public class UserController {
 		 */
 		
 	 @GetMapping("/users")
+	 @PreAuthorize(("hasAuthority('SCOPE_ADMIN')"))
 	    public List<User> list() {
 		 System.out.println("Get all Users...");
 	             return userService.getAll();
@@ -74,16 +77,13 @@ public class UserController {
 				User userr = user.get();
 				if (userr.getPassword().equals(pwd) )
 				{
-				userr.setDateToken(LocalDateTime.now());
-				userr.setResetToken(UUID.randomUUID().toString());
+
      			userService.save(userr);
      			SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
      			simpleMailMessage.setFrom("testab.symfony@gmail.com");
      			simpleMailMessage.setTo(userr.getEmail());
      			simpleMailMessage.setSubject("Password Reset Request");
-     			simpleMailMessage.setText("Pou récupérer votre Mot De passe cliquer sur ce Lien :\n" + appUrl
-    					+ "/resetpwd?token=" + userr.getResetToken());
-     			System.out.println(userr.getResetToken());
+
     			userService.sendEmail(simpleMailMessage);
     			return "1";
 				}
@@ -95,29 +95,7 @@ public class UserController {
 	   }
 	 }
 	 
-	 @GetMapping("/users/rest/{resetToken}/{password}")
-	    public String findUserByResetToken (@PathVariable String resetToken,@PathVariable String password) {
-		 System.out.println("Get  User By resetToken..");
-	            
-	             Optional<User> user = userService.findUserByResetToken(resetToken);
-	             if (!user.isPresent()) {
-	 				System.out.println( "We didn't find an account for that Token");
-	 				return "0";
-	 			} else {
-	 				User userr = user.get();
-	 				LocalDateTime tokenCreationDate = userr.getDateToken();
 
-	 				if (isTokenExpired(tokenCreationDate)) {
-	 					System.out.println("Token expired.");
-	 					return "1";
-	 				}
- 			    	userr.setPassword(password.trim());
-	 				userr.setResetToken(null);
-	 				userr.setDateToken(null);
-	      			userService.save(userr);
-	      			return "2";
-	 			}
-	   }
 	 
 	 
 	 @GetMapping("/users/auth/{name}")
@@ -139,8 +117,7 @@ public class UserController {
 		addUserImage(file);
 	    String filename = file.getOriginalFilename();
 	    String newFileName = FilenameUtils.getBaseName(filename)+"."+FilenameUtils.getExtension(filename);
-	    userr.setFileName(newFileName);
-	    userr.setResetToken(null);
+
 	    userr.setActive(true);
     	// BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(); // Strength set as 16
 	//     User.setPassword(encoder.encode(User.getPassword()));
@@ -152,11 +129,10 @@ public class UserController {
 	    public void update(@PathVariable long id,@RequestParam("file") MultipartFile file,
 				 @RequestParam("user") String user) throws JsonParseException , JsonMappingException , Exception {
 	     User userr = new ObjectMapper().readValue(user, User.class);
-	        	deleteUserImage(userr);
+
 	        	 String filename = file.getOriginalFilename();
 	     	    String newFileName = FilenameUtils.getBaseName(filename)+"."+FilenameUtils.getExtension(filename);
-	     	    userr.setFileName(newFileName);
-	            userService.update(id, userr);
+
 	           
 	            addUserImage(file);
 	       
@@ -172,7 +148,7 @@ public class UserController {
 		 public byte[] getPhoto(@PathVariable("id") Long id) throws Exception{
 	    	 System.out.println("Get all Users Images...");
 			 User User   =userService.findById(id).get();
-			 return Files.readAllBytes(Paths.get(context.getRealPath("/ImgUsers/")+User.getFileName()));
+			 return Files.readAllBytes(Paths.get(context.getRealPath("/ImgUsers/")));
 		 }
 	    
 	    private void addUserImage(MultipartFile file)
@@ -198,7 +174,7 @@ public class UserController {
 	    	
 	    }
 	    
-	    private void deleteUserImage(User user)
+	    /*private void deleteUserImage(User user)
 	    {
 	    	System.out.println( " Delete User Image");
 	         try { 
@@ -214,7 +190,7 @@ public class UserController {
 	            {
 	                System.out.println("Failed to Delete image !!");
 	            }
-	    }
+	    }*/
 	    
 	    /**
 		 * Check whether the created token expired or not.
