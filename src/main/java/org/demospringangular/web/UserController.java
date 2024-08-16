@@ -37,7 +37,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @CrossOrigin("*")
 //@CrossOrigin(origins = "http://localhost:4200")
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/admin")
 public class UserController {
 	
 	 @Autowired
@@ -52,7 +52,7 @@ public class UserController {
 		 */
 		
 	 @GetMapping("/users")
-	 @PreAuthorize(("hasAuthority('SCOPE_ADMIN')"))
+	 //@PreAuthorize(("hasAuthority('ADMIN')"))
 	    public List<User> list() {
 		 System.out.println("Get all Users...");
 	             return userService.getAll();

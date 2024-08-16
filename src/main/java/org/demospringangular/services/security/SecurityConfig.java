@@ -98,10 +98,17 @@ private PasswordEncoder passwordEncoder;
         return httpSecurity
                 .csrf(csrf -> csrf.disable())
 
-                .authorizeHttpRequests(auth -> auth
+                /*.authorizeHttpRequests(auth -> auth
                         .requestMatchers("/token/**").permitAll()
                         .anyRequest().authenticated()
-                )
+                )*/
+                .authorizeHttpRequests(registry -> {
+                    //registry.requestMatchers("/home", "/register/**", "/authenticate").permitAll();
+                    registry.requestMatchers( "/token/**").permitAll();
+                    //registry.requestMatchers("/admin/**").hasRole("ADMIN");
+                    //registry.requestMatchers("/user/**").hasRole("USER");
+                    registry.anyRequest().authenticated();
+                })
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
                 .oauth2ResourceServer((oauth2) -> oauth2
