@@ -1,8 +1,6 @@
 package org.demospringangular.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 @NoArgsConstructor
@@ -11,11 +9,14 @@ import lombok.*;
 @Setter
 @ToString
 @Builder
+@Table(name = "student")
 @Entity
 public class Student {
 
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private String firstName;
     private String lastName;
     @Column(unique = true)

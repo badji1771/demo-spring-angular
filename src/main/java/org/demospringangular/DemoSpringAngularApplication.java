@@ -32,16 +32,16 @@ public class DemoSpringAngularApplication {
     @Bean
     CommandLineRunner commandLineRunner(StudentRepository studentRepository, PaymentRepository paymentRepository, UserRoleServiceI userRoleServiceI, RoleRepository roleRepository,  VilleRepository villeRepository){
         return args ->{
-           /* studentRepository.save(Student.builder().id(UUID.randomUUID().toString())
+            /*studentRepository.save(Student.builder().id(1L)
                             .firstName("Mohamed").lastName("Badji").code("123").programId("PROS")
                     .build());
-             studentRepository.save(Student.builder().id(UUID.randomUUID().toString())
+             studentRepository.save(Student.builder().id(2L)
                             .firstName("Assane").lastName("Badji").code("1234").programId("PROS")
                     .build());
-             studentRepository.save(Student.builder().id(UUID.randomUUID().toString())
+             studentRepository.save(Student.builder().id(3L)
                             .firstName("Baye").lastName("DIOP").code("12345").programId("SDI")
                     .build());
-             studentRepository.save(Student.builder().id(UUID.randomUUID().toString())
+             studentRepository.save(Student.builder().id(4L)
                             .firstName("Bamba").lastName("Badjinka").code("123456").programId("ZSDI")
                     .build());
             PaymentType[] paymentTypes = PaymentType.values();
@@ -55,9 +55,9 @@ studentRepository.findAll().forEach(st->{
                 .date(LocalDate.now())
                 .student(st).build());
     }
-});*/
+});
 
-           /* userRoleServiceI.addNewRole(new Role(1,"ADMIN","ADMIN",true));
+            userRoleServiceI.addNewRole(new Role(1,"ADMIN","ADMIN",true));
             userRoleServiceI.addNewRole(new Role(2,"USER","USER",true));
             userRoleServiceI.addNewRole(new Role(3,"MANAGER","MANAGER",true));
 

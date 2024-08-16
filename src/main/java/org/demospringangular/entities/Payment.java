@@ -16,6 +16,7 @@ public class Payment {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private LocalDate date;
     private double amount;
     private PaymentType type;

@@ -23,7 +23,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @ToString
 @Builder
 @Entity
-@Table(name = "Utilisateur",
+@Table(name = "utilisateur",
 uniqueConstraints = { 
 		@UniqueConstraint(columnNames = "username"
 				+ ""),
@@ -34,7 +34,7 @@ uniqueConstraints = {
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class User {
 	@Id
-	  @GeneratedValue(strategy = GenerationType.AUTO)
+	  @GeneratedValue(strategy = GenerationType.IDENTITY)
 	  private long id; 
 	@NotBlank
 	@Size(max = 40)

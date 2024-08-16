@@ -9,6 +9,7 @@ import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
+import org.demospringangular.services.MyUserDetailService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -48,10 +49,17 @@ private RsakeysConfig rsakeysConfig;
 
 private PasswordEncoder passwordEncoder;
 
-    public SecurityConfig(RsakeysConfig rsakeysConfig, PasswordEncoder passwordEncoder) {
+
+
+    private MyUserDetailService userDetailService;
+
+    public SecurityConfig(RsakeysConfig rsakeysConfig, PasswordEncoder passwordEncoder, MyUserDetailService userDetailService) {
         this.rsakeysConfig = rsakeysConfig;
         this.passwordEncoder = passwordEncoder;
+        this.userDetailService = userDetailService;
     }
+
+
 
     //@Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
@@ -64,33 +72,23 @@ private PasswordEncoder passwordEncoder;
        authhProvider.setUserDetailsService(userDetailsService);
        return new ProviderManager(authhProvider);
     }
-    /*@Bean
-    public UserDetailsService userDetailsService(DataSource dataSource) {
-        JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource);
 
-        // Requête SQL pour récupérer les utilisateurs à partir de votre table `Utilisateur`
-        jdbcUserDetailsManager.setUsersByUsernameQuery(
-                "SELECT username, password, is_active AS enabled FROM utilisateur WHERE username = ?");
 
-        // Requête SQL pour récupérer les rôles à partir de votre table `User_Role`
-        jdbcUserDetailsManager.setAuthoritiesByUsernameQuery(
-                "SELECT u.username, r.code AS authority " +
-                        "FROM utilisateur u, role r, utilisateur_user_roles ur " +
-                        "WHERE u.id = ur.user_id AND r.id = ur.role_id AND u.username = ?");
-
-        return jdbcUserDetailsManager;
-    }*/
     @Bean
+    public UserDetailsService userDetailsService() {
+        return userDetailService;
+    }
+   /* @Bean
   public UserDetailsService inMemoryUserDetailsManager(){
         return new InMemoryUserDetailsManager(
                 User.withUsername("user1").password(passwordEncoder.encode("1234")).authorities("USER").build(),
                 User.withUsername("user2").password(passwordEncoder.encode("1234")).authorities("USER","MANAGER").build(),
                 User.withUsername("admin").password(passwordEncoder.encode("1234")).authorities("USER","ADMIN").build()
         );
-  }
+  }*/
 
 
-    /*@Bean
+    /*@Beanaa
     public UserDetailsService userDetailsService() {
         return new UserDetailsServiceImpl();
     }
