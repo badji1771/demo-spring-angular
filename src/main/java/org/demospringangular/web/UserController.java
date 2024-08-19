@@ -52,7 +52,7 @@ public class UserController {
 		 */
 		
 	 @GetMapping("/users")
-	 //@PreAuthorize(("hasAuthority('ADMIN')"))
+	 @PreAuthorize(("hasAuthority('ROLE_ADMIN')"))
 	    public List<User> list() {
 		 System.out.println("Get all Users...");
 	             return userService.getAll();

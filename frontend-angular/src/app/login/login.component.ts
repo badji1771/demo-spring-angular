@@ -24,15 +24,8 @@ export class LoginComponent implements OnInit{
     });
   }
 
+
   /*login() {
-    let username = this.loginForm.value.username;
-    let password = this.loginForm.value.password;
-    let auth:boolean=this.authService.login(username,password);
-    if(auth==true){
-      this.router.navigateByUrl("/admin")
-    }
-  }*/
-  login() {
     let username = this.loginForm.value.username;
     let password = this.loginForm.value.password;
     this.authService.login(username).subscribe(
@@ -71,8 +64,21 @@ export class LoginComponent implements OnInit{
 
       }
     );
-  }
+  }*/
 
+  login(){
+    let username = this.loginForm.value.username;
+    let password = this.loginForm.value.password;
+    this.authService.login(username,password).subscribe({
+      next:data =>{
+        this.authService.loadProfile(data);
+        this.router.navigateByUrl("/admin")
+      },
+      error:err =>{
+        console.log(err);
+      }
+    })
+  }
 
 
 }

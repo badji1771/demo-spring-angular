@@ -36,8 +36,12 @@ import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import javax.sql.DataSource;
+import java.util.List;
 
 
 @Configuration
@@ -49,8 +53,6 @@ private RsakeysConfig rsakeysConfig;
 
 private PasswordEncoder passwordEncoder;
 
-
-
     private MyUserDetailService userDetailService;
 
     public SecurityConfig(RsakeysConfig rsakeysConfig, PasswordEncoder passwordEncoder, MyUserDetailService userDetailService) {
@@ -58,8 +60,6 @@ private PasswordEncoder passwordEncoder;
         this.passwordEncoder = passwordEncoder;
         this.userDetailService = userDetailService;
     }
-
-
 
     //@Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
@@ -73,7 +73,6 @@ private PasswordEncoder passwordEncoder;
        return new ProviderManager(authhProvider);
     }
 
-
     @Bean
     public UserDetailsService userDetailsService() {
         return userDetailService;
@@ -86,13 +85,6 @@ private PasswordEncoder passwordEncoder;
                 User.withUsername("admin").password(passwordEncoder.encode("1234")).authorities("USER","ADMIN").build()
         );
   }*/
-
-
-    /*@Beanaa
-    public UserDetailsService userDetailsService() {
-        return new UserDetailsServiceImpl();
-    }
-*/
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
@@ -105,7 +97,7 @@ private PasswordEncoder passwordEncoder;
                 .authorizeHttpRequests(registry -> {
                     //registry.requestMatchers("/home", "/register/**", "/authenticate").permitAll();
                     registry.requestMatchers( "/token/**").permitAll();
-                    //registry.requestMatchers("/admin/**").hasRole("ADMIN");
+                    registry.requestMatchers("/admin/**").hasRole("ADMIN");
                     //registry.requestMatchers("/user/**").hasRole("USER");
                     registry.anyRequest().authenticated();
                 })
@@ -130,4 +122,15 @@ private PasswordEncoder passwordEncoder;
     }
 
 
+    @Bean
+    CorsConfigurationSource corsConfigurationSource(){
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
+        corsConfiguration.addAllowedOrigin("*");
+        corsConfiguration.addAllowedMethod("*");
+        corsConfiguration.addAllowedHeader("*");
+       // corsConfiguration.setExposedHeaders(List.of("x-auth-token"));
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**",corsConfiguration);
+        return source;
+    }
 }
