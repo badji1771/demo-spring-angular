@@ -4,6 +4,7 @@ import {Payment, Role, User} from "../model/students.model";
 import {environment} from "../../environments/environment";
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {catchError, map, Observable, of} from "rxjs";
+import {jwtDecode} from "jwt-decode";
 
 @Injectable({
   providedIn: 'root'
@@ -19,22 +20,39 @@ export class AuthService {
   public username : any;
   public isAuthenticated : boolean = false;
   public roles : string[] =[];
-  public rolesForUser : Role[] =[];
   accessToken!:string;
-  //public rolesForUser : string[] =[];
+
 
   constructor(private http : HttpClient,private router : Router) { }
 
-  islogin = false;
+
+  public login(username : string,password : string){
+    let options = {
+      headers : new HttpHeaders().set("Content-Type","application/x-www-form-urlencoded")
+    }
+    let params = new HttpParams().set("username",username).set("password",password).set("withRefreshToken",false).set("grantType","password");
+    return this.http.post(`${environment.backendHost}/token`,params,options)
+  }
+  loadProfile(data: any){
+    console.log("data ",data);
+    this.isAuthenticated = true;
+    this.accessToken = data['accessToken'];
+    let decodeJwt:any = jwtDecode(this.accessToken);
+    console.log("decodeJwt ",decodeJwt);
+    this.username = decodeJwt.sub;
+    this.roles = decodeJwt.scope;
+    //window.localStorage.setItem("jwt-token",this.accessToken);
+  }
+
   /*login(username :string ) {
     this.isAuthenticated = true;
     return this.http.get<User>(`${environment.backendHost}/api/users/auth/${username}`)
   }*/
 
-  allRolesByUser(username :string ) {
+  /*allRolesByUser(username :string ) {
     this.isAuthenticated = true;
     return this.http.get<Array<Role>>(`${environment.backendHost}/api/userole/role/${username}`)
-  }
+  }*/
 
   /*login(username: string): Observable<User | null> {
     return this.http.get<User>(`${environment.backendHost}/api/users/auth/${username}`).pipe(
@@ -57,22 +75,9 @@ export class AuthService {
     );
   }*/
 
-  public login(username : string,password : string){
-    let options = {
-      headers : new HttpHeaders().set("Content-Type","application/x-www-form-urlencoded")
-    }
-    let params = new HttpParams().set("username",username).set("password",password).set("withRefreshToken",false).set("grantType","password");
-    return this.http.post(`${environment.backendHost}/token`,params,options)
-  }
-  loadProfile(data: any){
-    this.isAuthenticated = true;
-    this.accessToken = data['access-token'];
-    /*let decodeJwt:any = jwtDecode(this.accessToken);
-    this.username = decodeJwt.sub;
-    this.roles = decodeJwt.scope;*/
-  }
 
-  public rolesByUser(username : string){
+
+  /*public rolesByUser(username : string){
     this.allRolesByUser(username).subscribe(
       datas =>{
         this.rolesForUser = datas;
@@ -85,7 +90,7 @@ export class AuthService {
 
       }
     )
-  }
+  }*/
   /*public login(username : string, password : string):boolean{
   if(this.users[username] && this.users[username]['password']==password){
     this.username = username;
@@ -101,6 +106,16 @@ export class AuthService {
     this.isAuthenticated=false;
     this.roles=[];
     this.username =undefined;
+    this.accessToken="undefined";
+    window.localStorage.removeItem('accessToken');
     this.router.navigateByUrl("/login")
+  }
+
+  loadJwtTokenFromLocalStorage() {
+    let token = window.localStorage.getItem("jwt-token");
+    if(token){
+      this.loadProfile({'accessToken':token});
+      this.router.navigateByUrl("/admin")
+    }
   }
 }

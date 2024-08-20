@@ -39,6 +39,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 import javax.sql.DataSource;
 import java.util.List;
@@ -89,7 +90,6 @@ private PasswordEncoder passwordEncoder;
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
                 .csrf(csrf -> csrf.disable())
-
                 /*.authorizeHttpRequests(auth -> auth
                         .requestMatchers("/token/**").permitAll()
                         .anyRequest().authenticated()
@@ -97,7 +97,7 @@ private PasswordEncoder passwordEncoder;
                 .authorizeHttpRequests(registry -> {
                     //registry.requestMatchers("/home", "/register/**", "/authenticate").permitAll();
                     registry.requestMatchers( "/token/**").permitAll();
-                    registry.requestMatchers("/admin/**").hasRole("ADMIN");
+                   // registry.requestMatchers("/students").hasRole("ADMIN");
                     //registry.requestMatchers("/user/**").hasRole("USER");
                     registry.anyRequest().authenticated();
                 })
@@ -122,15 +122,27 @@ private PasswordEncoder passwordEncoder;
     }
 
 
-    @Bean
+    /*@Bean
     CorsConfigurationSource corsConfigurationSource(){
         CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.addAllowedOrigin("*");
+        corsConfiguration.addAllowedOrigin("http://localhost:4200");
         corsConfiguration.addAllowedMethod("*");
         corsConfiguration.addAllowedHeader("*");
        // corsConfiguration.setExposedHeaders(List.of("x-auth-token"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**",corsConfiguration);
         return source;
+    }*/
+
+    @Bean
+    public CorsFilter corsFilter() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration config = new CorsConfiguration();
+        //config.setAllowCredentials(true);
+        config.addAllowedOrigin("http://localhost:4200");  // Autoriser cette origine
+        config.addAllowedHeader("*");
+        config.addAllowedMethod("*");
+        source.registerCorsConfiguration("/**", config);
+        return new CorsFilter(source);
     }
 }

@@ -25,7 +25,7 @@ import {MatInput, MatInputModule} from "@angular/material/input";
 import {ReactiveFormsModule} from "@angular/forms";
 import {AuthGuard} from "./guards/auth.guard";
 import {AuthorizationGuard} from "./guards/authorization.guard";
-import {HttpClientModule} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClientModule, provideHttpClient, withInterceptors} from "@angular/common/http";
 import {MatTableModule} from "@angular/material/table";
 import {MatPaginator, MatPaginatorModule} from "@angular/material/paginator";
 import {MatSort, MatSortModule} from "@angular/material/sort";
@@ -38,6 +38,8 @@ import {ToastrModule} from "ngx-toastr";
 import {PdfViewerModule} from "ng2-pdf-viewer";
 import {MatProgressSpinner, MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {appHttpInterceptor} from "./interceptors/app-http.interceptor";
+import { NotAuthorizedComponent } from './not-authorized/not-authorized.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +55,8 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
     DashboardComponent,
     ProfileComponent,
     StudentDetailsComponent,
-    NewPaymentComponent
+    NewPaymentComponent,
+    NotAuthorizedComponent
   ],
   imports: [
     BrowserModule,
@@ -77,7 +80,7 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
   ],
   providers: [
-    provideAnimationsAsync(),AuthGuard,AuthorizationGuard
+    provideAnimationsAsync(),AuthGuard,AuthorizationGuard,/*{provide: HTTP_INTERCEPTORS,useClass: appHttpInterceptor,multi: true}*/provideHttpClient(withInterceptors([appHttpInterceptor]))
   ],
   bootstrap: [AppComponent]
 })

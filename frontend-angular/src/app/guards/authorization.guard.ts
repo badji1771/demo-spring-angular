@@ -18,13 +18,14 @@ export class AuthorizationGuard {
        let  requiredRoles = route.data['roles'];
        //let  requiredRoles = route.data['roleUserConnected'];
        let  userRoles = this.authService.roles;
-       console.log("requiredRoles",requiredRoles);
-       console.log("userRoles",userRoles);
+       //console.log("requiredRoles",requiredRoles);
+       //console.log("userRoles",userRoles);
        for(let role  of userRoles){
          if(requiredRoles.include(role)){
            return  true;
          }
        }
+       this.router.navigateByUrl("/admin/notAuthorized");
        return false;
      }else{
        this.router.navigateByUrl('/login');
