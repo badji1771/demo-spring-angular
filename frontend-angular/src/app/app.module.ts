@@ -40,6 +40,7 @@ import {MatProgressSpinner, MatProgressSpinnerModule} from "@angular/material/pr
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {appHttpInterceptor} from "./interceptors/app-http.interceptor";
 import { NotAuthorizedComponent } from './not-authorized/not-authorized.component';
+import {CommonModule} from "@angular/common";
 
 @NgModule({
   declarations: [
@@ -76,7 +77,8 @@ import { NotAuthorizedComponent } from './not-authorized/not-authorized.componen
     ToastrModule.forRoot(),
     MatDatepickerModule, MatNativeDateModule, MatSelectModule,
     PdfViewerModule, MatProgressSpinnerModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    CommonModule
 
   ],
   providers: [

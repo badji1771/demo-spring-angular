@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {AuthService} from "../services/auth.service";
 import {Router} from "@angular/router";
 import {ToastrService} from "ngx-toastr";
+import {CommonModule} from "@angular/common";
 
 @Component({
   selector: 'app-login',
@@ -11,19 +12,25 @@ import {ToastrService} from "ngx-toastr";
 })
 export class LoginComponent implements OnInit{
 
-  public loginForm! : FormGroup;
+  public loginForm = new FormGroup({
+  username : new FormControl('',[Validators.required,Validators.minLength(3)]),
+    password : new FormControl('',[Validators.required,Validators.minLength(3)]),
+});
+
   constructor(private fb:FormBuilder,private authService : AuthService,public toastr: ToastrService,private router: Router) {
   }
   user: any = {};
 
   public isAuthenticated : boolean = false;
   ngOnInit(): void {
-    this.loginForm = this.fb.group({
-      username : this.fb.control(''),
+   /* this.loginForm = this.fb.group({
+      username : this.fb.control('',[Validators.required,Validators.minLength(3)]),
       password : this.fb.control(''),
-    });
+    });*/
   }
-
+isInvalidAndToucheOrDrity(formControl : FormControl){
+    return formControl.invalid && (formControl.touched || formControl.dirty);
+}
 
   /*login() {
     let username = this.loginForm.value.username;
@@ -67,9 +74,13 @@ export class LoginComponent implements OnInit{
   }*/
 
   login(){
+    this.loginForm.markAllAsTouched();
+    if(this.loginForm.invalid){
+      return;
+    }
     let username = this.loginForm.value.username;
     let password = this.loginForm.value.password;
-    this.authService.login(username,password).subscribe({
+    this.authService.login(<string>username,<string>password).subscribe({
       next:data =>{
         this.authService.loadProfile(data);
         this.router.navigateByUrl("/admin")
