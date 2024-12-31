@@ -41,6 +41,7 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {appHttpInterceptor} from "./interceptors/app-http.interceptor";
 import { NotAuthorizedComponent } from './not-authorized/not-authorized.component';
 import {CommonModule} from "@angular/common";
+import { NewStudentComponent } from './new-student/new-student/new-student.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +58,8 @@ import {CommonModule} from "@angular/common";
     ProfileComponent,
     StudentDetailsComponent,
     NewPaymentComponent,
-    NotAuthorizedComponent
+    NotAuthorizedComponent,
+    NewStudentComponent
   ],
   imports: [
     BrowserModule,
@@ -74,11 +76,18 @@ import {CommonModule} from "@angular/common";
     ReactiveFormsModule,
     HttpClientModule, MatTableModule, MatPaginatorModule, MatSortModule,
     MatDatepickerModule, MatNativeDateModule, MatSelectModule,
-    ToastrModule.forRoot(),
+    //ToastrModule.forRoot(),
     MatDatepickerModule, MatNativeDateModule, MatSelectModule,
     PdfViewerModule, MatProgressSpinnerModule,
     BrowserAnimationsModule,
-    CommonModule
+    CommonModule,
+    ToastrModule.forRoot({
+      timeOut: 5000, // Durée d'affichage du toast
+      positionClass: 'toast-top-right', // Position en haut à droite
+      //preventDuplicates: true, // Empêche les doublons
+      closeButton: true,
+      progressBar: true,
+    }),
 
   ],
   providers: [

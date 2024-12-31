@@ -14,6 +14,7 @@ import {StudentDetailsComponent} from "./student-details/student-details.compone
 import {NewPaymentComponent} from "./new-payment/new-payment.component";
 import {AuthorizationGuard} from "./guards/authorization.guard";
 import {NotAuthorizedComponent} from "./not-authorized/not-authorized.component";
+import {NewStudentComponent} from "./new-student/new-student/new-student.component";
 
 const routes: Routes = [
   {path : "",component : LoginComponent},
@@ -30,6 +31,7 @@ const routes: Routes = [
       {path : "student-details/:code",component : StudentDetailsComponent},
       {path : "new-payment/:studentCode",component : NewPaymentComponent},
       {path : "notAuthorized",component : NotAuthorizedComponent},
+      {path : "new-student",component : NewStudentComponent}
     ]},
 
 ];

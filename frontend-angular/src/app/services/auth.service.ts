@@ -33,6 +33,7 @@ export class AuthService {
     let params = new HttpParams().set("username",username).set("password",password).set("withRefreshToken",false).set("grantType","password");
     return this.http.post(`${environment.backendHost}/token`,params,options)
   }
+
   loadProfile(data: any){
     console.log("data ",data);
     this.isAuthenticated = true;
